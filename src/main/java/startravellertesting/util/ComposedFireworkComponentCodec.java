@@ -16,8 +16,8 @@ public record ComposedFireworkComponentCodec(Codec<FireworkExplosionComponent> o
     public <T> DataResult<Pair<FireworkExplosionComponent, T>> decode(DynamicOps<T> ops, T input) {
         // decode the extra params and then decode the original, setting the thread-local context
         return EXTRA_PARAMS_CODEC.decode(ops, input).flatMap(params -> FireworkExplosionComponentDuck.doWithContext(
-                params.getFirst().orElse(null),
-                () -> original.decode(ops, params.getSecond())
+                params.getFirst().orElse(null) /* convert Optional to Nullable */,
+                () -> original.decode(ops, params.getSecond() /* use the partial from the extra params, idk if this matters, but it's here if it does */)
         ));
     }
 
@@ -25,7 +25,7 @@ public record ComposedFireworkComponentCodec(Codec<FireworkExplosionComponent> o
     public <T> DataResult<T> encode(FireworkExplosionComponent input, DynamicOps<T> ops, T prefix) {
         // encode the original, then encode the extra params, merging them by assuming that both are a map like structure
         return original.encode(input, ops, prefix).flatMap(out -> EXTRA_PARAMS_CODEC.encode(
-                Optional.ofNullable(FireworkExplosionComponentDuck.starTravellerTesting$params(input)),
+                Optional.ofNullable(FireworkExplosionComponentDuck.starTravellerTesting$params(input)) /* convert Nullable to Optional */,
                 ops,
                 out
         ));

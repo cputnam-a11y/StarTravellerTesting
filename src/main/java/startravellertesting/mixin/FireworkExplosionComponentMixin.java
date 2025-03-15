@@ -26,7 +26,7 @@ public class FireworkExplosionComponentMixin implements FireworkExplosionCompone
     private ExtraParams starTravellerTesting$params;
 
     // this name needs to match the name of the record component, and consequently, the field defined above
-    @Unique
+    @Unique // Unique can't mangle public method's names
     public ExtraParams starTravellerTesting$params() {
         return starTravellerTesting$params;
     }
@@ -36,11 +36,11 @@ public class FireworkExplosionComponentMixin implements FireworkExplosionCompone
             at = @At(
                     value = "INVOKE",
                     target = "Lcom/mojang/serialization/codecs/RecordCodecBuilder;create(Ljava/util/function/Function;)Lcom/mojang/serialization/Codec;",
-                    remap = false
+                    remap = false // dfu class
             )
     )
     private static Codec<FireworkExplosionComponent> wrapCodec(Codec<FireworkExplosionComponent> original) {
-        return new ComposedFireworkComponentCodec(original);
+        return new ComposedFireworkComponentCodec(original); // main work done in codec class
     }
 
     @ModifyExpressionValue(
@@ -51,7 +51,7 @@ public class FireworkExplosionComponentMixin implements FireworkExplosionCompone
             )
     )
     private static PacketCodec<RegistryByteBuf, FireworkExplosionComponent> wrapPacketCodec(PacketCodec<RegistryByteBuf, FireworkExplosionComponent> original) {
-        return new ComposedFireworkComponentPacketCodec(original);
+        return new ComposedFireworkComponentPacketCodec(original); // main work done in codec class
     }
 
     @Inject(
