@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "startravellertesting.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "FireworkExplosionComponentMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "plugin": "startravellertesting.mixin.ModMixinConfigPlugin",
+  "client": [
+    "FireworkSparksParticleMixin",
+    "FireworkSparksParticleMixin$FireworkParticleMixin"
+  ]
+}
